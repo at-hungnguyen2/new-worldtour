@@ -1,0 +1,20 @@
+version: '2'
+services:
+  web:
+    build: .
+    container_name: demo-web
+    volumes:
+      - ./src:/app
+    ports:
+      - "9090:80"
+    links:
+      - serverdb
+  serverdb:
+    image: mysql:5.7
+    container_name: demo-serverdb
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+    ports:
+      - 3406:3306
