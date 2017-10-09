@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Team extends Model
 {
+    CONST ITEMS_PER_PAGE = 10;
+    
 	// status: pending, approved, Kicked
     protected $fillable = [
     	'name', 'avatar', 'slogan', 'home_stadium_id', 'leader', 'status'

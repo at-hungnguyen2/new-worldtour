@@ -1,4 +1,8 @@
 
+import Vue from 'vue'
+// Our App Routing
+import VueRouter from 'vue-router'
+
 window._ = require('lodash');
 
 /**
@@ -19,6 +23,8 @@ try {
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
+window.Vue = Vue;
+window.router = VueRouter;
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';

@@ -4,10 +4,12 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Traits\BeforeUpdate;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use BeforeUpdate;
 
     CONST ITEMS_PER_PAGE = 10;
     CONST ADMIN = 1;
@@ -21,7 +23,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'phone_number', 'address', 'gender', 'team_id', 'role', 'birthday'
+        'name', 'email', 'password', 'phone_number', 'address', 'gender', 'team_id', 'birthday'
     ];
 
     /**

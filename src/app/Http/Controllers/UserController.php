@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Image;
+use Illuminate\Support\Facades\File;
+use App\Http\Requests\UpdateUserRequest;
 
 class UserController extends Controller
 {
@@ -89,26 +91,39 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $fileName = $request->user()->name.'.'.$image->getClientOriginalExtension();
-            $path = public_path(config('app.avatar_url').$fileName);
-            Image::make(file_get_contents($image))->resize(300, 300)->save($path);
-            if ($request->user()->image) {
-                File::delete(public_path(config('app.avatar_url').$request->user()->image));
+        try {
+            $fileName = null;
+            if ($request->hasFile('avatar')) {
+                $image = $request->file('avatar');
+                $fileName = $request->user()->id.'.'.$image->getClientOriginalExtension();
+                $path = public_path(config('app.avatar_url').$fileName);
+                Image::make(file_get_contents($image))->resize(300, 300)->save($path);
+                if ($request->user()->avatar) {
+                    File::delete(public_path(config('app.avatar_url').$request->user()->image));
+                }
+                $request->except('avatar');
             }
-            $request->except('image');
-        }
 
-        $requestInput = $request->all();
-        dd($requestInput);
-        if ($fileName) {
-            $requestInput['image'] = $fileName;
+            $requestInput = $request->except(['_token', '_method']);
+            if ($fileName) {
+                $requestInput['avatar'] = config('app.avatar_url').$fileName;
+            }
+            $requestInput['id'] = $id;
+            $user = $this->user->findOrFail($id)->updateNotNull($requestInput);
+            if ($user) {
+                flash(__('Update success'))->success()->important();
+                return redirect()->route('users.show', [$this->user->findOrFail($id)]);
+            } else {
+                flash(__('Update fail'))->error()->important();
+                return back()->withInput();
+            }    
+        } catch (ModelNotFoundException $e) {
+            flash(__('Cannot find user'))->error()->important();
+            return redirect()->route('users.index');
         }
-        $user = $this->user->findOrFail($id)->update($requestInput);
-
+        
     }
 
     /**

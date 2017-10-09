@@ -20,4 +20,8 @@ Auth::routes();
 Route::middleware(['auth'])->group(function() {
 	Route::get('/home', 'HomeController@index')->name('home');
 	Route::resource('/users', 'UserController');
+	Route::resource('/teams', 'TeamController');
+	Route::get('/asc', function() {
+		return view('layouts/example');
+	});
 });

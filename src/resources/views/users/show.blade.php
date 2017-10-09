@@ -5,6 +5,7 @@
     </h1>
 @endsection
 @section('main-content')
+    @include('flash::message')
     @if(isset($user))
         <div class="panel-body inf-content">
             <div class="row">
@@ -16,7 +17,7 @@
                         <div class="box-body">
                             <div class="col-md-4 text-center">
                                 <img alt="" title="" class="img-circle img-thumbnail isTooltip"
-                                     src="{{ $user->image }}"
+                                     src="{{ $user->avatar }}"
                                      data-original-title="Usuario">
                             </div>
                             <div class="col-md-8">

@@ -22,15 +22,15 @@
                         {{ csrf_field() }}
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="text-center">
-                                <img src="{{ $user->image }}" class="avatar img-circle img-thumbnail"
+                                <img src="{{ $user->avatar }}" class="avatar img-circle img-thumbnail"
                                      alt=" avatar">
-                                <h6 class="{{ $errors->has('image') ? ' has-error' : '' }}">{{ __('Upload Image') }}</h6>
+                                <h6 class="{{ $errors->has('avatar') ? ' has-error' : '' }}">{{ __('Upload Avatar') }}</h6>
                                 <div class="input-chosen">
-                                    <input type="file" name="image" class="center-block well well-sm">
+                                    <input type="file" name="avatar" class="center-block well well-sm">
                                 </div>
-                                @if ($errors->has('image'))
+                                @if ($errors->has('avatar'))
                                     <span class="help-block">
-                                <strong>{{ $errors->first('image') }}</strong>
+                                <strong>{{ $errors->first('avatar') }}</strong>
                             </span>
                                 @endif
                             </div>
@@ -52,7 +52,7 @@
                             <div class="form-group {{ $errors->has('full_name') ? ' has-error' : '' }}">
                                 <label class="col-md-3 control-label">{{ __('Name') }}</label>
                                 <div class="col-md-8">
-                                    <input class="form-control" value="{{ old('name', $user->name) }}"
+                                    <input class="form-control" value="{{ old('name') }}" placeholder="{{ $user->name }}" 
                                            type="text"
                                            name="name">
 

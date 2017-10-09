@@ -3,9 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Team;
+use App\Stadium;
 
 class TeamController extends Controller
 {
+    protected $team;
+
+    public function __construct(Team $team)
+    {
+        $this->team = $team;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +22,8 @@ class TeamController extends Controller
      */
     public function index()
     {
-        //
+        $teams = $this->team->paginate($this->team->ITEMS_PER_PAGE);
+        return view('teams.index')->with(['teams' => $teams]);
     }
 
     /**
@@ -23,7 +33,11 @@ class TeamController extends Controller
      */
     public function create()
     {
-        //
+        $stadiums = Stadium::paginate(Stadium::ITEMS_PER_PAGE);
+
+        return view('teams.create')->with([
+            'stadiums' => $stadiums
+        ]);
     }
 
     /**
